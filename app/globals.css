@@ -3,40 +3,32 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 200 20% 98%;
-    --btn-background: 200 10% 91%;
-    --btn-background-hover: 200 10% 89%;
-    --foreground: 200 50% 3%;
+  .link {
+    @apply underline;
+  }
+  h1, h2, h3 {
+    @apply font-medium;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --background: 200 50% 3%;
-      --btn-background: 200 10% 9%;
-      --btn-background-hover: 200 10% 12%;
-      --foreground: 200 20% 96%;
-    }
+  h1 {
+    @apply text-3xl;
   }
-}
-
-@layer base {
-  * {
-    @apply border-foreground/20;
+  h2 {
+    @apply text-2xl;
+  }
+  h3 {
+    @apply text-xl;
   }
 }
 
-.animate-in {
-  animation: animateIn 0.3s ease 0.15s both;
-}
-
-@keyframes animateIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+@layer components {
+  input[type="text"] {
+    @apply border border-gray-200 rounded p-3 outline-none focus:ring-2 focus:ring-lime-300;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .btn {
+    @apply p-3 rounded cursor-pointer;
+  }
+  .btn.btn-primary {
+    @apply bg-lime-700 text-white hover:bg-lime-800;
   }
 }

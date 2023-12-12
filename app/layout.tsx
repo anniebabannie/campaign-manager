@@ -1,5 +1,6 @@
-import { GeistSans } from 'geist/font/sans'
 import './globals.css'
+import Nav from './Nav'
+// import Breadcrumbs from './Breadcrumbs'
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -17,11 +18,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body className="bg-background text-foreground">
-        <main className="min-h-screen flex flex-col items-center">
-          {children}
-        </main>
+    <html lang="en">
+      <body>
+      <Nav/>
+      <main className="container mx-auto mt-12">
+        {/* <Breadcrumbs separator={" | "} capitalizeLinks={true}/> */}
+        {children}
+      </main>
       </body>
     </html>
   )
