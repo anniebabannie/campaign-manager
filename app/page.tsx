@@ -6,7 +6,6 @@ export default async function Index() {
   const cookieStore = cookies()
   const supabase = createClient(cookieStore)
   const { data: campaigns } = await supabase.from("campaign").select()
-
   return (
     <>
       <h1>My Campaigns</h1>

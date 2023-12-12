@@ -7,9 +7,11 @@ export default async function Campaign({ params }:{
     id:string
   }
 }) {
-  const cookieStore = cookies()
-  const supabase = createClient(cookieStore)
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
   const { data: campaigns } = await supabase.from("campaign").select().limit(1)
+  const { data: players } = await supabase.from("campaign").select().limit(1)
+  
   if (!campaigns) return "Campaign not found";
   const campaign = campaigns[0];
 
