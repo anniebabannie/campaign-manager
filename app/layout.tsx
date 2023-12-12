@@ -22,7 +22,6 @@ export default function RootLayout({
       <body>
       <Nav/>
       <main className="container mx-auto mt-12">
-        {/* <Breadcrumbs separator={" | "} capitalizeLinks={true}/> */}
         {children}
       </main>
       </body>
