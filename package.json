@@ -11,6 +11,7 @@
     "@supabase/supabase-js": "latest",
     "@tailwindcss/typography": "^0.5.10",
     "autoprefixer": "10.4.15",
+    "axios": "^1.6.2",
     "geist": "^1.0.0",
     "next": "latest",
     "postcss": "8.4.29",
