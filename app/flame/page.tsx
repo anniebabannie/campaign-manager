@@ -4,10 +4,6 @@ import { spawnMachine } from "./actions"
 
 export default function Flame() {
 
-  function handleClick() {
-    spawnMachine();
-  }
-
   return(
     <div className="flex justify-center">
       <Button/>

@@ -6,8 +6,6 @@ export const machinesService = axios.create({
   headers: { 'Authorization': `Bearer ${process.env.FLY_API_TOKEN}` }
 })
 
-let processGroup:string = "";
-
 // if (process.env.FLY_IMAGE_REF!.includes(':deployment-')) {
 //   const deploymentId = process.env.FLY_IMAGE_REF!.split(':deployment-')!.pop()!.toLocaleLowerCase()
 //   processGroup = `worker-${deploymentId}`
@@ -22,6 +20,7 @@ export type MachineGuest = {
   memory_mb: number
 }
 
+const FLY_IMAGE_REF = process.env.FLY_IMAGE_REF || '';
 
 export async function spawnAnotherMachine(machinesService:AxiosInstance, guest:MachineGuest) {
   const filename = url.fileURLToPath(import.meta.url);
@@ -41,9 +40,9 @@ export async function spawnAnotherMachine(machinesService:AxiosInstance, guest:M
           cmd: [filename]
         }
       ],
-      // metadata: {
-      //   fly_process_group: processGroup
-      // }
+      metadata: {
+        fly_process_group: processGroup
+      }
     }
   })
 
