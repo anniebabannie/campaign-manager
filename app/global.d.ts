@@ -1,5 +1,7 @@
-import type { Database } from '@/database.types'
+import type { Database, Tables } from '@/database.types'
 
 declare global {
-  type Campaign = Database['public']['Tables']['Campaign']['Row']
+  type Campaign = Tables<'campaign'>;
+  type Character = Tables<'character'>;
+  type CampaignCharacter = Tables<'campaign_character'>;
 }

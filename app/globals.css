@@ -22,13 +22,16 @@
 }
 
 @layer components {
-  input[type="text"] {
-    @apply border border-gray-200 rounded p-3 outline-none focus:ring-2 focus:ring-lime-300;
+  input[type="text"],textarea {
+    @apply border border-gray-400 rounded p-3 outline-none focus:ring-2 focus:ring-gray-300;
   }
   .btn {
     @apply p-3 rounded cursor-pointer;
   }
-  .btn.btn-primary {
-    @apply bg-lime-700 text-white hover:bg-lime-800;
+  .btn-primary {
+    @apply bg-black text-white hover:bg-gray-700;
+  }
+  .btn.btn-sm {
+    @apply text-sm py-2 px-4;
   }
 }
