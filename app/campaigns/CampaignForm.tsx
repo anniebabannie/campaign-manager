@@ -1,14 +1,13 @@
 import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default async function CampaignForm({ campaign, handleSubmit }: { 
   campaign?: Campaign,
   handleSubmit: (formData: FormData) => void
 }) {
   const action = campaign ? "Update" : "Create";
+  const supabase = createClient(cookies())
+  const { data: profile } = await supabase.from('profile').select('*').limit(100)
 
   return (
     <form className="flex flex-col gap-4" action={handleSubmit}>
@@ -20,6 +19,17 @@ export default async function CampaignForm({ campaign, handleSubmit }: {
         <label htmlFor="description">Description</label>
         <textarea id="description" defaultValue={campaign?.description as string} name="description"/>
       </div>
+      
+      <div className="flex flex-col gap-2">
+        <select name="players" multiple>
+          {profile?.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.first_name} {p.last_name} • {p.username}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <button className="btn btn-primary" type="submit">{action} Campaign</button>
     </form>
   )

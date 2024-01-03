@@ -1,19 +1,32 @@
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 import Link from "next/link"
+import CampaignCharacters from "../CampaignCharacters"
 
 export default async function Campaign({ params }:{
   params: {
     id:string
   }
 }) {
+  type CampaignPlayer = {
+    profile_id: Profile
+  }
+  type CampaignCharacter = {
+    character_id: Character
+  }
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const { data: campaigns } = await supabase.from("campaign").select().eq('id', params.id).limit(1)
-  const { data: players } = await supabase.from("campaign").select().limit(1)
+  const { data: campaigns } = await supabase.from("campaign").select().eq('id', params.id).limit(1);
   
   if (!campaigns) return "Campaign not found";
   const campaign = campaigns[0];
+  if (!campaign) return;
+  const { data: character_ids } = await supabase.from("campaign_character").select(`
+    character_id(id, name, profile_id:profile(
+      id, first_name, last_name
+    ))
+  `).eq('campaign_id', campaign.id).returns<CampaignCharacter[]>()
+  const characters = character_ids?.map((c) => c.character_id);
 
   return(
     <>
@@ -23,6 +36,13 @@ export default async function Campaign({ params }:{
       </nav>
       <h1>{campaign.name}</h1>
       <p>{campaign.description}</p>
+
+      <div className="flex gap-4">
+        <div>
+          <h2>Characters</h2>
+            <CampaignCharacters id={campaign.id} campaign_id={campaign.id} characters={characters!}/>
+        </div>
+      </div>
     </>
   )
 }
