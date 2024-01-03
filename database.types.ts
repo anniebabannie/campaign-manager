@@ -77,18 +77,15 @@ export interface Database {
       campaign_player: {
         Row: {
           campaign_id: string
-          id: string
-          user_id: string
+          profile_id: string
         }
         Insert: {
           campaign_id: string
-          id?: string
-          user_id: string
+          profile_id: string
         }
         Update: {
           campaign_id?: string
-          id?: string
-          user_id?: string
+          profile_id?: string
         }
         Relationships: [
           {
@@ -99,10 +96,10 @@ export interface Database {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "campaign_player_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "campaign_player_profile_id_fkey"
+            columns: ["profile_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "profile"
             referencedColumns: ["id"]
           }
         ]
@@ -136,25 +133,28 @@ export interface Database {
           }
         ]
       }
-      profiles: {
+      profile: {
         Row: {
           first_name: string | null
           id: string
           last_name: string | null
+          username: string
         }
         Insert: {
           first_name?: string | null
           id: string
           last_name?: string | null
+          username: string
         }
         Update: {
           first_name?: string | null
           id?: string
           last_name?: string | null
+          username?: string
         }
         Relationships: [
           {
-            foreignKeyName: "profiles_id_fkey"
+            foreignKeyName: "profile_id_fkey"
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"

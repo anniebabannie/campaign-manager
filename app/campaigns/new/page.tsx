@@ -1,4 +1,3 @@
-import { Tables } from "@/database.types"
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
 import CampaignForm from "../CampaignForm";

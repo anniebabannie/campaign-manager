@@ -23,12 +23,24 @@ export default async function EditPage({ params }: {
     'use server'
     const name = formData.get('name') as string;
     const description = formData.get('description') as string;
+    const players = formData.getAll('players') as string[];
+    console.log(players)
     
     const supabase = createClient(cookies())
     const response = await supabase.from('campaign').update({ 
       name,
       description,
     }).eq('id', campaign.id)
+
+    if (players.length > 0) {
+      const campaign_players = players.map((player_id) => ({
+        campaign_id: campaign.id,
+        profile_id: player_id
+      }))
+      
+      await supabase.from('campaign_player').upsert(campaign_players)
+    
+    }
     redirect(`/campaigns/${campaign.id}`)
   }
   

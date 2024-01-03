@@ -1,15 +1,25 @@
+import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import CharacterForm from "../CharacterForm";
+
 export default function NewCharacter() {
+  async function handleSubmit(formData: FormData) {
+    'use server'
+    const name = formData.get('name') as string;
+    const description = formData.get('description') as string;
+    const supabase = createClient(cookies())
+    const { data: { user } } = await supabase.auth.getUser()
+
+    const response = await supabase.from('campaign').insert({ 
+      name,
+      description,
+      user_id: user!.id,
+    })
+    redirect('/')
+  }
+
   return (
-    <form className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <label htmlFor="name">Name of Character</label>
-        <input type="text" id="name" name="name" required aria-required/>
-      </div>
-      <div className="flex flex-col gap-2">
-        <label htmlFor="description">Description</label>
-        <textarea id="description" name="description"/>
-      </div>
-      <button className="btn btn-primary" type="submit">Create Character</button>
-    </form>
+    <CharacterForm handleSubmit={handleSubmit} />
   )
 }
