@@ -32,7 +32,7 @@ export default async function Campaign({ params }:{
   return(
     <>
       <nav className="mb-8 flex justify-between">
-        <Link href="/">&#x2190; Back to Campaigns</Link>
+        <Link href="/">&#x2190; Back to Dashboard</Link>
         <Link href={`/campaigns/${campaign.id}/edit`} className="btn btn-sm btn-primary">Edit</Link>
       </nav>
       <h1>{campaign.name}</h1>

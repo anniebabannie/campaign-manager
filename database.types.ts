@@ -41,7 +41,7 @@ export interface Database {
           }
         ]
       }
-      campaign_characters: {
+      campaign_character: {
         Row: {
           campaign_id: string
           character_id: string | null
@@ -59,14 +59,14 @@ export interface Database {
         }
         Relationships: [
           {
-            foreignKeyName: "campaign_characters_campaign_id_fkey"
+            foreignKeyName: "campaign_character_campaign_id_fkey"
             columns: ["campaign_id"]
             isOneToOne: false
             referencedRelation: "campaign"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "campaign_characters_character_id_fkey"
+            foreignKeyName: "campaign_character_character_id_fkey"
             columns: ["character_id"]
             isOneToOne: false
             referencedRelation: "character"
@@ -106,18 +106,21 @@ export interface Database {
       }
       character: {
         Row: {
+          avatar: string | null
           created_at: string
           id: string
           name: string
           profile_id: string
         }
         Insert: {
+          avatar?: string | null
           created_at?: string
           id?: string
           name?: string
           profile_id: string
         }
         Update: {
+          avatar?: string | null
           created_at?: string
           id?: string
           name?: string

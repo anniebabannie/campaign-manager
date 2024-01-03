@@ -15,8 +15,9 @@ export default async function Character({ params }:{
 
   return(
     <>
-      <nav className="mb-8">
+      <nav className="mb-8 flex justify-between">
         <Link href="/">&#x2190; Back to Dashboard</Link>
+        <Link href={`/characters/${character.id}/edit`} className="btn btn-sm btn-primary">Edit</Link>
       </nav>
       <h1>{character.name}</h1>
     </>
