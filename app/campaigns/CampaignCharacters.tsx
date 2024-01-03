@@ -21,7 +21,6 @@ export default function CampaignCharacters({ id, campaign_id, characters }: {
   const [input, setInput] = useState("");
   const [searchChars, setSearchChars] = useState<CharacterWithProfile[] | null>([]);
   const [campaignCharacters, setCampaignCharacters] = useState<CharacterWithProfile[] | null | undefined>(characters);
-  const [processingDelete, setProcessingDelete] = useState(false);
 
   useEffect(() => {
     if (!input) return;
@@ -57,9 +56,7 @@ export default function CampaignCharacters({ id, campaign_id, characters }: {
               </Link>
               <div className="text-xs text-gray-500">({character.profile_id.first_name} {character.profile_id.last_name})</div>
               <div>
-                {!processingDelete &&
-                  <XMarkIcon onClick={(id) => removeCharacterFromCampaign(character.id)} className="h-5 w-5 text-gray-400 hover:text-gray-500 cursor-pointer"/>
-                }
+                <XMarkIcon onClick={(id) => removeCharacterFromCampaign(character.id)} className="h-5 w-5 text-gray-400 hover:text-gray-500 cursor-pointer"/>
               </div>
             </li>
           )
