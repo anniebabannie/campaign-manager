@@ -2,8 +2,11 @@ import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 import Link from "next/link"
 import CampaignCharacters, { CharacterWithProfile } from "../CampaignCharacters"
+import { get } from "http"
+import { SupabaseClient } from "@supabase/supabase-js"
+import { getCampaignCharacters } from "@/app/actions"
 
-type CampaignCharacterProfile = {
+export type CampaignCharacterProfile = {
   character_id: CharacterWithProfile
 }
 
@@ -12,6 +15,7 @@ export default async function Campaign({ params }:{
     id:string
   }
 }) {
+  
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   const { data: campaigns } = await supabase.from("campaign").select().eq('id', params.id).limit(1);
@@ -19,12 +23,12 @@ export default async function Campaign({ params }:{
   if (!campaigns) return "Campaign not found";
   const campaign = campaigns[0];
   if (!campaign) return;
-  const { data: character_ids } = await supabase.from("campaign_character").select(`
-    character_id(id, name, profile_id:profile(
-      id, first_name, last_name
-    ))
-  `).eq('campaign_id', campaign.id).returns<CampaignCharacterProfile[]>()
-  const characters = character_ids?.map((c) => c.character_id);
+  // const { data: character_ids } = await supabase.from("campaign_character").select(`
+  //   character_id(id, name, profile_id:profile(
+  //     id, first_name, last_name
+  //   ))
+  // `).eq('campaign_id', campaign.id).returns<CampaignCharacterProfile[]>();
+  const characters = await getCampaignCharacters(campaign.id);
   return(
     <>
       <nav className="mb-8 flex justify-between">
