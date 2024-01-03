@@ -1,19 +1,17 @@
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
 import Link from "next/link"
-import CampaignCharacters from "../CampaignCharacters"
+import CampaignCharacters, { CharacterWithProfile } from "../CampaignCharacters"
+
+type CampaignCharacterProfile = {
+  character_id: CharacterWithProfile
+}
 
 export default async function Campaign({ params }:{
   params: {
     id:string
   }
 }) {
-  type CampaignPlayer = {
-    profile_id: Profile
-  }
-  type CampaignCharacter = {
-    character_id: Character
-  }
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
   const { data: campaigns } = await supabase.from("campaign").select().eq('id', params.id).limit(1);
@@ -25,9 +23,8 @@ export default async function Campaign({ params }:{
     character_id(id, name, profile_id:profile(
       id, first_name, last_name
     ))
-  `).eq('campaign_id', campaign.id).returns<CampaignCharacter[]>()
+  `).eq('campaign_id', campaign.id).returns<CampaignCharacterProfile[]>()
   const characters = character_ids?.map((c) => c.character_id);
-
   return(
     <>
       <nav className="mb-8 flex justify-between">
@@ -40,7 +37,7 @@ export default async function Campaign({ params }:{
       <div className="flex gap-4">
         <div>
           <h2>Characters</h2>
-            <CampaignCharacters id={campaign.id} campaign_id={campaign.id} characters={characters!}/>
+            <CampaignCharacters id={campaign.id} campaign_id={campaign.id} characters={characters}/>
         </div>
       </div>
     </>
