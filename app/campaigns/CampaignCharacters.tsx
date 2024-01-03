@@ -13,6 +13,32 @@ export default function CampaignCharacters({ id, campaign_id, characters }: {
   const [searchChars, setSearchChars] = useState<Character[] | null>([]);
   const [campaignCharacters, setCampaignCharacters] = useState<Character[] | null>(characters);
 
+  // const { data, error } = await supabase
+  // .from('users')
+  // .select(`
+  //   id,
+  //   username,
+  //   location,
+  //   profilePicture,
+  //   wishlistProducts:products(
+  //     id,
+  //     name,
+  //     price,
+  //     description,
+  //     tags(
+  //       id,
+  //       name
+  //     )
+  //   ),
+  //   wishlistCount:wishlist(count),
+  //   follows(
+  //     id,
+  //     username,
+  //     profilePicture
+  //   ),
+  //   followCount:follows(count)
+  // `)
+
   useEffect(() => {
     if (!input) return;
     const getCharacters = async () => await supabase.from('character').select().ilike('name', `%${input}%`).limit(10);
@@ -34,6 +60,7 @@ export default function CampaignCharacters({ id, campaign_id, characters }: {
               <div>
                 {character.name}
               </div>
+              <div>{character.user_id}</div>
             </li>
           )
         }

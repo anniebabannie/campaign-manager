@@ -16,11 +16,16 @@ export default async function Campaign({ params }:{
   }
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const { data: campaigns } = await supabase.from("campaign").select().eq('id', params.id).limit(1)
+  const { data: campaigns } = await supabase.from("campaign").select().eq('id', params.id).limit(1);
   
   if (!campaigns) return "Campaign not found";
   const campaign = campaigns[0];
-  const { data: character_ids } = await supabase.from("campaign_character").select(`character_id(id, name, user_id)`).eq('campaign_id', campaign.id).returns<CampaignCharacter[]>()
+  if (!campaign) return;
+  const { data: character_ids } = await supabase.from("campaign_character").select(`
+    character_id(id, name, profile_id:profile(
+      id, first_name, last_name
+    ))
+  `).eq('campaign_id', campaign.id).returns<CampaignCharacter[]>()
   const characters = character_ids?.map((c) => c.character_id);
 
   return(
