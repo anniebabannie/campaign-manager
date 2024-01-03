@@ -41,32 +41,32 @@ export interface Database {
           }
         ]
       }
-      campaign_character: {
+      campaign_characters: {
         Row: {
-          campaign_id: string | null
+          campaign_id: string
           character_id: string | null
           id: string
         }
         Insert: {
-          campaign_id?: string | null
+          campaign_id: string
           character_id?: string | null
           id?: string
         }
         Update: {
-          campaign_id?: string | null
+          campaign_id?: string
           character_id?: string | null
           id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "campaign_character_campaign_id_fkey"
+            foreignKeyName: "campaign_characters_campaign_id_fkey"
             columns: ["campaign_id"]
             isOneToOne: false
             referencedRelation: "campaign"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "campaign_character_character_id_fkey"
+            foreignKeyName: "campaign_characters_character_id_fkey"
             columns: ["character_id"]
             isOneToOne: false
             referencedRelation: "character"
@@ -109,26 +109,26 @@ export interface Database {
           created_at: string
           id: string
           name: string
-          user_id: string
+          profile_id: string
         }
         Insert: {
           created_at?: string
           id?: string
           name?: string
-          user_id: string
+          profile_id: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
-          user_id?: string
+          profile_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "character_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "character_profile_id_fkey"
+            columns: ["profile_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "profile"
             referencedColumns: ["id"]
           }
         ]
