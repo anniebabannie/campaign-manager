@@ -1,7 +1,26 @@
 import { cookies } from "next/headers"
 import { createClient } from "@/utils/supabase/server"
-import { redirect } from "next/navigation"
 import CharacterForm from "../../CharacterForm"
+import { minioClient } from "@/utils/minio"
+import { join } from "path"
+import { unlink, writeFile } from "fs/promises"
+import { randomUUID } from "crypto"
+
+async function uploadAvatar(file: File): Promise<boolean> {
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+  const filename = `${randomUUID()}-${file.name}`;
+
+  const path = join('/', 'tmp', filename);
+  await writeFile(path, buffer);
+  console.log(path);
+
+  const obj = await minioClient.fPutObject('development', filename, path);
+  console.log(obj);
+  await unlink(path);
+
+  return true;
+}
 
 export const getCharacter = (id: string) => {
   // void evaluates the given expression and returns undefined
@@ -15,24 +34,18 @@ export default async function EditPage({ params }: {
     id: string
   }
 }) {
+
   const result = await getCharacter(params.id)
   if (!result.data) return "Character not found";
   const character = result.data[0];
 
-  async function handleSubmit(formData: FormData) {
+  async function updateCharacter(formData: FormData) {
     'use server'
-    const name = formData.get('name') as string;
-    
-    const supabase = createClient(cookies())
-    const response = await supabase.from('character').update({ 
-      name,
-    }).eq('id', character.id)
-    redirect(`/characters/${character.id}`)
   }
   
   return (
     <>
-      <CharacterForm character={character} handleSubmit={handleSubmit}/>
+      <CharacterForm character={character} handleSubmit={updateCharacter}/>
     </>
   )
 }

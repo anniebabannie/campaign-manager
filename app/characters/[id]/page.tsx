@@ -1,5 +1,6 @@
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
+import Image from "next/image"
 import Link from "next/link"
 
 export default async function Character({ params }:{
@@ -20,6 +21,9 @@ export default async function Character({ params }:{
         <Link href={`/characters/${character.id}/edit`} className="btn btn-sm btn-primary">Edit</Link>
       </nav>
       <h1>{character.name}</h1>
+      {character.avatar &&
+        <Image src={character.avatar} alt={`Avatar picture for ${character.name}`} width="500" height="800"/>
+      }
     </>
   )
 }
