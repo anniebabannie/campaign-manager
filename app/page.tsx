@@ -20,7 +20,7 @@ export default async function Index() {
             {campaigns?.map((campaign) => {
               return(
                 <li key={campaign.id}>
-                  <a href={`/campaigns/${campaign.id}`} className="border border-black rounded-lg p-8 block hover:bg-gray-50">
+                  <a href={`/campaigns/${campaign.id}`} className="clickable-block">
                     <div className="overflow-hidden h-[200px]">
                       <h3 className="mb-2">{campaign.name}</h3>
                       <p>{campaign.description}</p>
@@ -41,7 +41,7 @@ export default async function Index() {
           <ul className="grid grid-cols-4 gap-4">
             {characters?.map((char) => (
               <li>
-                <a href={`/characters/${char.id}`} className="border border-black rounded-lg p-8 block hover:bg-gray-50">
+                <a href={`/characters/${char.id}`} className="clickable-block">
                   <h3 className="mb-2">{char.name}</h3>
                 </a>
               </li>

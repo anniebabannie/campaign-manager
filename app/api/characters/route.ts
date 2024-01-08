@@ -3,7 +3,6 @@ import { createClient } from "@/utils/supabase/server";
 import { randomUUID } from "crypto";
 import { unlink, writeFile } from "fs/promises";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 import { join } from "path";
 
