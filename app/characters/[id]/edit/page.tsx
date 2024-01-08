@@ -22,7 +22,7 @@ async function uploadAvatar(file: File): Promise<boolean> {
   return true;
 }
 
-export const getCharacter = (id: string) => {
+const getCharacter = (id: string) => {
   // void evaluates the given expression and returns undefined
   // https://developer.mozilla.org/docs/Web/JavaScript/Reference/Operators/void
   const supabase = createClient(cookies())

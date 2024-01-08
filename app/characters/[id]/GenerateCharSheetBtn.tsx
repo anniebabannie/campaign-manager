@@ -9,7 +9,8 @@ export default function GenerateCharSheetBtn({ characterId, sheet }: {characterI
         const response = await fetch(`/api/characters/${characterId}/generate_char_sheet`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "fly-replay": "instance=1"
           },
           body: JSON.stringify({ sheet })
         });
