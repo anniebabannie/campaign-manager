@@ -32,7 +32,7 @@ export default function CharacterForm({ character, handleSubmit }: {
       <div className="flex flex-col gap-2">
         <label htmlFor="name">Avatar</label>
         {character?.avatar &&
-          <Image src={character?.avatar} alt={`Avatar picture for ${character.name}`} width="200"/>
+          <Image src={character?.avatar} alt={`Avatar picture for ${character.name}`} width="200" height="400"/>
         }
         <input type="file" id="avatar" name="avatar" required aria-required/>
       </div>

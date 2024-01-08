@@ -107,6 +107,7 @@ export interface Database {
       character: {
         Row: {
           avatar: string | null
+          character_sheet: Json | null
           created_at: string
           id: string
           name: string
@@ -114,6 +115,7 @@ export interface Database {
         }
         Insert: {
           avatar?: string | null
+          character_sheet?: Json | null
           created_at?: string
           id?: string
           name?: string
@@ -121,6 +123,7 @@ export interface Database {
         }
         Update: {
           avatar?: string | null
+          character_sheet?: Json | null
           created_at?: string
           id?: string
           name?: string

@@ -3,6 +3,9 @@ export type FifthEditionCharacterSheet = {
   race: PlayersHandbookRaces;
   alignment: Alignment;
   experiencePoints: number;
+  level: number;
+  background: string;
+  inspiration: number;
   abilityScores: {
     strength: number;
     dexterity: number;
@@ -13,53 +16,60 @@ export type FifthEditionCharacterSheet = {
   }
   proficiencyBonus: number;
   savingThrows: {
-    strength: boolean;
-    dexterity: boolean;
-    constitution: boolean;
-    intelligence: boolean;
-    wisdom: boolean;
-    charisma: boolean;
+    strength: number;
+    dexterity: number;
+    constitution: number;
+    intelligence: number;
+    wisdom: number;
+    charisma: number;
   },
   skills: {
-    acrobatics: boolean;
-    animalHandling: boolean;
-    arcana: boolean;
-    athletics: boolean;
-    deception: boolean;
-    history: boolean;
-    insight: boolean;
-    intimidation: boolean;
-    investigation: boolean;
-    medicine: boolean;
-    nature: boolean;
-    perception: boolean;
-    performance: boolean;
-    persuasion: boolean;
-    religion: boolean;
-    sleightOfHand: boolean;
-    stealth: boolean;
-    survival: boolean;
+    acrobatics?: number;
+    animalHandling?: number;
+    arcana?: number;
+    athletics?: number;
+    deception?: number;
+    history?: number;
+    insight?: number;
+    intimidation?: number;
+    investigation?: number;
+    medicine?: number;
+    nature?: number;
+    perception?: number;
+    performance?: number;
+    persuasion?: number;
+    religion?: number;
+    sleightOfHand?: number;
+    stealth?: number;
+    survival?: number;
   },
+  initiative: number;
+  passiveWisdom: number;
   armorClass: number;
   totalHitPoints: number;
   currentHitPoints: number;
-  temporaryHitPoints: number;
-  hitDice: number;
+  temporaryHitPoints?: number;
+  hitDice: string;
   deathSaves: {
     successes: number;
     failures: number;
   },
   speed: number;
-  attacksAndSpellcasting: {
+  attacksAndSpellcasting?: {
     name: string;
     bonus: number;
-    damageType: string;
-    damageDice: string;
+    type: string;
+    damage: string;
   }[],
-  equipment: string[],
-  featuresAndTraits: string[],
-  backstory: string,
-  alliesAndOrganizations: string[],
+  equipment?: Equipment[],
+  featuresAndTraits?: FeatureOrTrait[],
+  backstory?: string,
+  alliesAndOrganizations?: string[],
+  proficienciesAndLanguages?: ProficiencyOrLanguage[],
+  personalityTraits?: string,
+  ideals?: string,
+  bonds?: string,
+  flaws?: string,
 }
 
 type Alignment = 'lawful good' | 'neutral good' | 'chaotic good' | 'lawful neutral' | 'neutral' | 'chaotic neutral' | 'lawful evil' | 'neutral evil' | 'chaotic evil';
@@ -67,3 +77,20 @@ type Alignment = 'lawful good' | 'neutral good' | 'chaotic good' | 'lawful neutr
 type CharacterClass = 'barbarian' | 'bard' | 'cleric' | 'druid' | 'fighter' | 'monk' | 'paladin' | 'ranger' | 'rogue' | 'sorcerer' | 'warlock' | 'wizard' | 'blood hunter' | 'other';
 
 type PlayersHandbookRaces = 'dwarf' | 'elf' | 'halfling' | 'human' | 'dragonborn' | 'gnome' | 'half-elf' | 'half-orc' | 'tiefling';
+
+type Equipment = {
+  name: string;
+  quantity: number;
+  weight: number;
+}
+
+type FeatureOrTrait = {
+  name: string;
+  description: string;
+}
+
+type ProficiencyOrLanguage = {
+  name: string;
+  type: 'proficiency' | 'language';
+  description?: string;
+}
