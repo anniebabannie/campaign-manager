@@ -1,7 +1,6 @@
 import { FifthEditionCharacterSheet } from "@/utils/character_sheets/5th_edition"
 import { createClient } from "@/utils/supabase/server"
 import { cookies } from "next/headers"
-import Image from "next/image"
 import Link from "next/link"
 import GenerateCharSheetBtn from "./GenerateCharSheetBtn"
 
@@ -19,15 +18,14 @@ export default async function Character({ params }:{
 
   return(
     <>
+    <div className="container mx-auto">
+
       <nav className="mb-8 flex justify-between">
         <Link href="/">&#x2190; Back to Dashboard</Link>
         <Link href={`/characters/${character.id}/edit`} className="btn btn-sm btn-primary">Edit</Link>
       </nav>
       <h1>{character.name}</h1>
       <div className="flex gap-4">
-        {character.avatar &&
-          <Image src={character.avatar} alt={`Avatar picture for ${character.name}`} width="600" height="800"/>
-        }
         {sheet &&
         <>
           <div className="flex flex-col gap-3">
@@ -90,6 +88,7 @@ export default async function Character({ params }:{
         </>
         }
       </div>
+    </div>
     </>
   )
 }
