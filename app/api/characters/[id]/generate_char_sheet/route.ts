@@ -5,6 +5,6 @@ export async function POST(request: NextRequest) {
   const { id } = await request.json();
   if (!id) return NextResponse.json({ success: false, error: "No id provided" });
 
-  const response = generateCharacterSheet(id)
-  return NextResponse.json({ success: true, body: response });
+  // const response = generateCharacterSheet(id)
+  return NextResponse.json({ success: true, body: 'yay' });
 }
