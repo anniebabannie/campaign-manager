@@ -1,0 +1,20 @@
+name: Fly Review Apps
+on:
+  pull_request: 
+    types: ["opened"]
+# write a github job that deploys a NEW fly app using the Machines api on every pull request
+jobs:
+  create_review_app:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: hello world
+        run: echo "hello world"
+        shell: bash
+      # - name: Checkout
+      #   uses: xxxxxxxxxxxxxxxx@xx
+      # - name: Deploy
+      #   run: |
+      #     flyctl apps create
+      #     flyctl deploy
+      #     flyctl open
