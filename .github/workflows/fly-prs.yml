@@ -11,10 +11,10 @@ jobs:
       - name: hello world
         run: echo "hello world"
         shell: bash
-      # - name: Checkout
-      #   uses: xxxxxxxxxxxxxxxx@xx
-      # - name: Deploy
-      #   run: |
-      #     flyctl apps create
-      #     flyctl deploy
-      #     flyctl open
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl apps create --name=${{ secrets.FLY_APP_NAME}}-pr-${{ github.event.number }}-${{ github.event.pull_request.head.sha }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - run: flyctl deploy
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
