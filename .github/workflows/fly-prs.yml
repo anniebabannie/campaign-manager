@@ -1,20 +1,17 @@
 name: Fly Review Apps
 on:
   pull_request: 
-    types: ["opened"]
+    types: ["opened", "edited", "synchronize"]
 # write a github job that deploys a NEW fly app using the Machines api on every pull request
 jobs:
   create_review_app:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: hello world
-        run: echo "hello world"
-        shell: bash
-      # - name: Checkout
-      #   uses: xxxxxxxxxxxxxxxx@xx
-      # - name: Deploy
-      #   run: |
-      #     flyctl apps create
-      #     flyctl deploy
-      #     flyctl open
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: flyctl launch --name=campaign-manager-pr-${{ github.event.number }}-${{ github.event.pull_request.head.sha }} --copy-config -y
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
