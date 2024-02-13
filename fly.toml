@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for campaign-manager on 2023-12-11T18:36:16-08:00
+# fly.toml app configuration file generated for campaign-manager-pr-4-12345 on 2024-02-13T10:11:35-08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "campaign-manager"
-primary_region = "sea"
+app = 'campaign-manager-pr-4-12345'
+primary_region = 'sea'
 
 [build]
 
@@ -14,9 +14,9 @@ primary_region = "sea"
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
+  processes = ['app']
 
 [[vm]]
-  cpu_kind = "shared"
+  cpu_kind = 'shared'
   cpus = 1
   memory_mb = 1024
