@@ -12,6 +12,7 @@ export default async function Index() {
     <>
       <section>
         <header className="flex gap-4 items-center">
+          <h1>HEY LOOK ITS A PR</h1>
           <h2>My Campaigns</h2>
           <Link href="/campaigns/new" className="btn btn-sm btn-primary">+ New Campaign</Link>
         </header>
