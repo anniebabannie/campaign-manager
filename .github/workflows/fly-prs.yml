@@ -1,7 +1,7 @@
 name: Fly Review Apps
 on:
   pull_request: 
-    types: ["opened", "edited"]
+    types: ["opened", "edited", "synchronize"]
 # write a github job that deploys a NEW fly app using the Machines api on every pull request
 jobs:
   create_review_app:
