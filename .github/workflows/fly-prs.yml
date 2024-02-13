@@ -1,7 +1,7 @@
 name: Fly Review Apps
 on:
   pull_request: 
-    types: ["opened"]
+    types: ["opened", "edited"]
 # write a github job that deploys a NEW fly app using the Machines api on every pull request
 jobs:
   create_review_app:
@@ -15,6 +15,6 @@ jobs:
       - run: flyctl apps create --name=campaign-manager-pr-${{ github.event.number }}-${{ github.event.pull_request.head.sha }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-      - run: flyctl deploy
+      - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
