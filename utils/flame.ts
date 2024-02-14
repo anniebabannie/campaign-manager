@@ -3,7 +3,7 @@ import http from 'node:http'
 import * as url from 'url';
 
 const { IS_RUNNER, FLY_API_TOKEN, FLY_APP_NAME, FLY_IMAGE_REF, NODE_ENV } = process.env
-const port = 5500;
+const port = 3001;
 const timeUntilStop = 5 * 60 * 1000
 let exitTimeout:NodeJS.Timeout;
 
@@ -124,8 +124,7 @@ async function spawnAnotherMachine(guest:GuestMachineConfig): Promise<void> {
       processes: [
         {
           name: "runner",
-          entrypoint: ['node'],
-          cmd: [filename]
+          cmd: ["node", filename]
         }
       ],
       metadata: {
@@ -133,7 +132,7 @@ async function spawnAnotherMachine(guest:GuestMachineConfig): Promise<void> {
       }
     }
   }).then(res => {
-    console.log('machine spawned', res.data)
+    console.log('machine spawned')
   })
   .catch((err) => console.log('error spawning machine', err))
 
@@ -178,6 +177,7 @@ async function checkIfThereAreWorkers() {
     const res = await fetch(workerBaseUrl, { method: 'GET', headers: { 'Authorization': `Bearer ${FLY_API_TOKEN}` }, })
     return res.status === 200
   } catch (err) {
+    console.log('error checking if there are workers...', err)
     return false
   }
 }

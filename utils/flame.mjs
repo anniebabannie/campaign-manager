@@ -48,7 +48,8 @@ if (IS_RUNNER) {
       const { filename, args } = JSON.parse(body);
 
       const mod = await import(filename);
-      const result = await mod.default(...args)
+      const result = await mod.default(...(JSON.parse(args)))
+      console.log("result", result)
       const jsonResponse = JSON.stringify({___result: result})
       response.writeHead(200, { 'Content-Type': 'application/json' });
       response.write(jsonResponse); 
@@ -82,12 +83,12 @@ export default function flame(originalFunc, config) {
   const filename = url.fileURLToPath(config.filepath);
 
   return async function (...args) {
-    console.log('running flame...') 
+    console.log('checking to see if there are workers...') 
     if (!(await checkIfThereAreWorkers())) {
       console.log('no workers found...')
       await spawnAnotherMachine(guest)
     }
-
+    console.log('executing on machine...') 
     return await execOnMachine(filename, args)
   }
 }
@@ -121,7 +122,7 @@ async function spawnAnotherMachine(guest) {
         }
       })
     }).then(res => res.json()).then(async (machine) => {
-      console.log('machine spawned...', machine) 
+      console.log('machine spawned...') 
       console.log('startig machine timeout...')
       await fetch(`https://api.machines.dev/v1/apps/${FLY_APP_NAME}/machines/${machine.id}/wait?timeout=60&state=started`, {
         method: 'GET',
@@ -148,8 +149,9 @@ async function checkIfThereAreWorkers() {
 }
 
 async function execOnMachine(filename, args) {
+  console.log('args', args)
   const jsonArgs = JSON.stringify(args)
-  
+  console.log("jsonArgs", jsonArgs)  
   const execRes = await fetch(workerBaseUrl, {
     method: 'POST',
     body: JSON.stringify({filename, args: jsonArgs}),
