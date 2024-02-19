@@ -3,7 +3,7 @@ import http from 'node:http'
 import * as url from 'url';
 
 const { IS_RUNNER, FLY_API_TOKEN, FLY_APP_NAME, FLY_IMAGE_REF, NODE_ENV } = process.env
-const port = 3001;
+const port = 3000;
 const timeUntilStop = 5 * 60 * 1000
 let exitTimeout:NodeJS.Timeout;
 
@@ -24,52 +24,51 @@ if (NODE_ENV !== "development") {
   workerBaseUrl = `http://localhost:${port}`
 }
 
-const workerService = axios.create({ baseURL: workerBaseUrl })
 const machinesService = axios.create({
   baseURL: `https://api.machines.dev/v1/apps/${FLY_APP_NAME}`,
   headers: { 'Authorization': `Bearer ${FLY_API_TOKEN}` }
 })
 
-if (IS_RUNNER) {
-  const requestHandler: http.RequestListener<typeof http.IncomingMessage, typeof http.ServerResponse> = (request, response) => {
-    scheduleStop()
-    console.info(`Received ${request.method} request`)
+// if (IS_RUNNER) {
+//   const requestHandler: http.RequestListener<typeof http.IncomingMessage, typeof http.ServerResponse> = (request, response) => {
+//     scheduleStop()
+//     console.info(`Received ${request.method} request`)
 
-    var body = "";
+//     var body = "";
 
-    if (request.method === 'GET') {
-      response.writeHead(200, { 'Content-Type': 'application/json' });
-      response.write(JSON.stringify({ok: true})); 
-      response.end();
-      return
-    }
+//     if (request.method === 'GET') {
+//       response.writeHead(200, { 'Content-Type': 'application/json' });
+//       response.write(JSON.stringify({ok: true})); 
+//       response.end();
+//       return
+//     }
 
-    request.on('readable', function() {
-      let chunk
-      if (chunk = request.read()) {
-        body += chunk
-      }
-    });
+//     request.on('readable', function() {
+//       let chunk
+//       if (chunk = request.read()) {
+//         body += chunk
+//       }
+//     });
 
-    request.on('end', async function run() {
-      const { filename, args } = JSON.parse(body)
+//     request.on('end', async function run() {
+//       const { filename, args } = JSON.parse(body)
 
-      const mod = await import(filename);
-      const result = await mod.default(...args)
-      const jsonResponse = JSON.stringify({___result: result})
-      response.writeHead(200, { 'Content-Type': 'application/json' });
-      response.write(jsonResponse); 
-      response.end();
-    });
-  }
+//       const mod = await import(filename);
+//       const result = await mod.default(...args)
+//       const jsonResponse = JSON.stringify({___result: result})
+//       response.writeHead(200, { 'Content-Type': 'application/json' });
+//       response.write(jsonResponse); 
+//       response.end();
+//     });
+//   }
   
-  const server = http.createServer(requestHandler)
+//   const server = http.createServer(requestHandler)
   
-  server.listen(port, () => {
-    console.log(`Server is listening on ${port}`)
-    scheduleStop()
-  })
-}
+//   server.listen(port, () => {
+//     console.log(`Server is listening on ${port}`)
+//     scheduleStop()
+//   })
+// }
 
 export interface FlameConfig {
   filepath: string,
@@ -110,7 +109,6 @@ export default function flame(originalFunc: (...args: any[]) => any, config: Fla
 }
 
 async function spawnAnotherMachine(guest:GuestMachineConfig): Promise<void> {
-  const filename = url.fileURLToPath(import.meta.url);
   
   console.log('spawning another machine...')
   machinesService.post('/machines', {
@@ -121,12 +119,6 @@ async function spawnAnotherMachine(guest:GuestMachineConfig): Promise<void> {
       env: {
         IS_RUNNER: "1"
       },
-      processes: [
-        {
-          name: "runner",
-          cmd: ["node", filename]
-        }
-      ],
       metadata: {
         fly_process_group: processGroup
       }
@@ -135,40 +127,6 @@ async function spawnAnotherMachine(guest:GuestMachineConfig): Promise<void> {
     console.log('machine spawned')
   })
   .catch((err) => console.log('error spawning machine', err))
-
-  // try {
-  //   await fetch(`https://api.machines.dev/v1/apps/${FLY_APP_NAME}/machines`, {
-  //     method: 'POST',
-  //     headers: { 'Authorization': `Bearer ${FLY_API_TOKEN}` },
-  //     body: JSON.stringify({
-  //       config: {
-  //         auto_destroy: true,
-  //         image: FLY_IMAGE_REF,
-  //         guest,
-  //         env: {
-  //           IS_RUNNER: "1"
-  //         },
-  //         processes: [
-  //           {
-  //             name: "runner",
-  //             entrypoint: ['node'],
-  //             cmd: [filename]
-  //           }
-  //         ],
-  //         metadata: {
-  //           fly_process_group: processGroup
-  //         }
-  //       }
-  //     })
-  //   }).then(res => res.json()).then(console.log)
-  //     .catch((err) => console.log('error spawning machine', err))
-    
-
-  // } catch (err) {
-  //   console.log(err)
-  // }
-
-
 }
 
 async function checkIfThereAreWorkers() {
